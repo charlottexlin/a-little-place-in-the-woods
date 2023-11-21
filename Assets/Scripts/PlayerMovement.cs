@@ -41,7 +41,10 @@ public class PlayerMovement : MonoBehaviour
         // Player is running if moving on x-axis
         anim.SetBool("isRunning", playerInput.x != 0);
         // Player is jumping if moving on y-axis and not touching ground
-        anim.SetBool("isJumping", rb.velocity.y != 0 && !coll.IsTouchingLayers(LayerMask.GetMask("Ground")));
+        anim.SetBool("isJumping",
+            rb.velocity.y != 0 &&
+            !coll.IsTouchingLayers(LayerMask.GetMask("Ground"))
+        );
     }
 
     /* Flips the player sprite based on the player input velocity */

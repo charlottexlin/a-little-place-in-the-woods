@@ -11,7 +11,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - Item
   - 
   - 
   - 
@@ -49,7 +49,4 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 3673666565
-    locked: 0
-  - name: Item
-    uniqueID: 585416969
     locked: 0
