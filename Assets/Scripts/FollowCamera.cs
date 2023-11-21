@@ -18,7 +18,8 @@ public class FollowCamera : MonoBehaviour
             newPosition.x = leftBound;
         } else if (newPosition.x > rightBound) {
             newPosition.x = rightBound;
-        } else if (newPosition.y < bottomBound) {
+        }
+        if (newPosition.y < bottomBound) {
             newPosition.y = bottomBound;
         } else if (newPosition.y > topBound) {
             newPosition.y = topBound;
