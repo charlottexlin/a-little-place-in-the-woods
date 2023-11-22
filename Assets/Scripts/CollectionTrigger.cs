@@ -7,7 +7,16 @@ public class CollectionTrigger : MonoBehaviour
     // The postcard object's script component
     [SerializeField] private Clickable clickable;
 
+    private void Start() {
+        clickable.enabled = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D other) {
+        if (clickable && other.gameObject.tag == "Player")
+            clickable.enabled = true;
+    }
+
+    private void OnTriggerStay2D(Collider2D other) {
         if (clickable && other.gameObject.tag == "Player")
             clickable.enabled = true;
     }
