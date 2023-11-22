@@ -3,11 +3,19 @@ using UnityEngine.InputSystem;
 
 public class Clickable : MonoBehaviour
 {
+    [Header("Click Behavior")]
     [SerializeField] private ClickBehavior clickBehavior;
+    [Header("Change Sprite Settings")]
     [SerializeField] private Sprite[] sprites;
+    [Header("Move Settings")]
     [SerializeField] private Vector2 newPosition;
-    private SpriteRenderer sprite;
+    [SerializeField] private float zRotation;
+    [Header("Destroy Object Settings")]
+    [SerializeField] private GameObject objectToDestroy;
+    [Header("Enable Clickable Settings")]
+    [SerializeField] private Clickable clickableToEnable;
     private Collider2D coll;
+    private SpriteRenderer sprite;
     private int currentSprite = 0;
 
     private void Start() {
@@ -44,41 +52,63 @@ public class Clickable : MonoBehaviour
                 case ClickBehavior.Move:
                     Move();
                     break;
+                case ClickBehavior.DestroyObject:
+                    DestroyObject();
+                    break;
+                case ClickBehavior.EnableClickable:
+                    EnableClickable();
+                    break;
             }
-
         }
     }
 
     private void PickUp() {
         if (ItemsToCollect.items.ContainsKey(gameObject.name)) {
             ItemsToCollect.items[gameObject.name] = true;
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 
     private void ChangeSprite() {
-        if (currentSprite < sprites.Length-1) {
-            currentSprite += 1;
+        if (sprites.Length > 0) {
+            if (currentSprite < sprites.Length-1) {
+                currentSprite += 1;
+            }
+            sprite.sprite = sprites[currentSprite];
+            // If item can no longer be clicked, remove the collider
+            if (currentSprite == sprites.Length-1) {
+                Destroy(coll);
+            }
         }
-        // If item can no longer be clicked, remove the collider
-        if (currentSprite == sprites.Length-1) {
-            Destroy(coll);
-        }
-        sprite.sprite = sprites[currentSprite];
     }
 
-    private void Move() { // TODO do we need
-        gameObject.transform.position = newPosition;
+    private void Move() {
+        gameObject.transform.localPosition = newPosition;
+        gameObject.transform.Rotate(new Vector3(0, 0, zRotation));
+        // Remove this behaviour so item can no longer be clicked
+        Destroy(this);
+    }
+
+    private void DestroyObject() {
+        if (objectToDestroy) {
+            Destroy(objectToDestroy);
+        }
     }
 
     private void Disappear() {
         Destroy(gameObject);
     }
+
+    private void EnableClickable() {
+        clickableToEnable.enabled = true;
+    }
 }
 
 public enum ClickBehavior {
-    PickUp,
-    ChangeSprite,
-    Move,
-    Disappear
+    PickUp, // For collectable items
+    ChangeSprite, // Change the sprite of this object
+    Move, // Move this object
+    DestroyObject, // Destroy another object
+    Disappear, // Destroy this object
+    EnableClickable // Enable another object to be clickable
 }
