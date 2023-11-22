@@ -4,6 +4,18 @@ using UnityEngine.InputSystem;
 public class Clickable : MonoBehaviour
 {
     [SerializeField] private ClickBehavior clickBehavior;
+    [SerializeField] private Sprite[] sprites;
+    [SerializeField] private Vector2 newPosition;
+    private SpriteRenderer sprite;
+    private Collider2D coll;
+    private int currentSprite = 0;
+
+    private void Start() {
+        if (clickBehavior == ClickBehavior.ChangeSprite) {
+            sprite = GetComponent<SpriteRenderer>();
+            coll = GetComponent<Collider2D>();
+        }
+    }
 
     private void Update() {
         //  Detect mouse click
@@ -29,6 +41,9 @@ public class Clickable : MonoBehaviour
                 case ClickBehavior.Disappear:
                     Disappear();
                     break;
+                case ClickBehavior.Move:
+                    Move();
+                    break;
             }
 
         }
@@ -42,8 +57,18 @@ public class Clickable : MonoBehaviour
     }
 
     private void ChangeSprite() {
-        Debug.Log("changing sprite");
-        // TODO
+        if (currentSprite < sprites.Length-1) {
+            currentSprite += 1;
+        }
+        // If item can no longer be clicked, remove the collider
+        if (currentSprite == sprites.Length-1) {
+            Destroy(coll);
+        }
+        sprite.sprite = sprites[currentSprite];
+    }
+
+    private void Move() { // TODO do we need
+        gameObject.transform.position = newPosition;
     }
 
     private void Disappear() {
@@ -54,5 +79,6 @@ public class Clickable : MonoBehaviour
 public enum ClickBehavior {
     PickUp,
     ChangeSprite,
+    Move,
     Disappear
 }
