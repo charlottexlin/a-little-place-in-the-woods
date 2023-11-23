@@ -3,11 +3,13 @@ using UnityEngine.InputSystem;
 
 public class Clickable : MonoBehaviour
 {
-    [Header("Click Behavior")]
-    [SerializeField] private ClickBehavior clickBehavior;
+    [Header("Pick up Settings")]
+    [SerializeField] private bool pickUp;
     [Header("Change Sprite Settings")]
+    [SerializeField] private bool changeSprite;
     [SerializeField] private Sprite newSprite;
     [Header("Move Settings")]
+    [SerializeField] private bool move;
     // This is a bit inconsistent because I can't get it to properly translate a local position into a world position :(
     // So if animatedMove is true, new position should be a WORLD POSITION.
     // If animatedMove is false, new position should be a LOCAL POSITION.
@@ -16,15 +18,19 @@ public class Clickable : MonoBehaviour
     [SerializeField] private bool animatedMove = false;
     [SerializeField] private float animationSpeed;
     [Header("Destroy Object Settings")]
+    [SerializeField] private bool destroyObject;
     [SerializeField] private GameObject objectToDestroy;
     [Header("Enable Clickable Settings")]
+    [SerializeField] private bool enableClickable;
     [SerializeField] private Clickable clickableToEnable;
+    [Header("Disappear Settings")]
+    [SerializeField] private bool disappear;
     private Collider2D coll;
     private SpriteRenderer sprite;
     private bool moving;
 
     private void Start() {
-        if (clickBehavior == ClickBehavior.ChangeSprite) {
+        if (changeSprite) {
             sprite = GetComponent<SpriteRenderer>();
             coll = GetComponent<Collider2D>();
         }
@@ -52,6 +58,7 @@ public class Clickable : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
         if (hit.collider != null && hit.collider.gameObject == gameObject) {
+            /*
             // Perform the appropriate action
             switch (clickBehavior) {
                 case ClickBehavior.PickUp:
@@ -73,6 +80,14 @@ public class Clickable : MonoBehaviour
                     EnableClickable();
                     break;
             }
+            */
+            // Perform the appropriate actions
+            if (pickUp) PickUp();
+            if (changeSprite) ChangeSprite();
+            if (move) Move();
+            if (enableClickable) EnableClickable();
+            if (destroyObject) DestroyObject();
+            if (disappear) Disappear();
         }
     }
 
@@ -83,8 +98,6 @@ public class Clickable : MonoBehaviour
         }
     }
 
-    // So, I originally programmed this thinking some objects would have multiple sprites to change to in sequence
-    // Ultimately, I only ended up using one sprite change per object, so some of this code is superfluous
     private void ChangeSprite() {
         sprite.sprite = newSprite;
         Destroy(coll);
@@ -116,6 +129,7 @@ public class Clickable : MonoBehaviour
     }
 }
 
+/*
 public enum ClickBehavior {
     PickUp, // For collectable items
     ChangeSprite, // Change the sprite of this object
@@ -124,3 +138,4 @@ public enum ClickBehavior {
     Disappear, // Destroy this object
     EnableClickable // Enable another object to be clickable
 }
+*/

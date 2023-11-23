@@ -5,11 +5,11 @@ public class FollowCamera : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Vector3 cameraDistance;
     // Coordinates that the camera should not pass
-    [SerializeField] private int leftBound;
-    [SerializeField] private int rightBound;
-    [SerializeField] private int topBound;
-    [SerializeField] private int bottomBound;
-    private bool disabled;
+    [SerializeField] private float leftBound;
+    [SerializeField] private float rightBound;
+    [SerializeField] private float topBound;
+    [SerializeField] private float bottomBound;
+    private bool disabled = false;
 
     private void LateUpdate() {
         if (!disabled) {
