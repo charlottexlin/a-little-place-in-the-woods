@@ -19,7 +19,7 @@ public class Checklist : MonoBehaviour
         {"Seashell", 9},
     };
     
-    private void Start() {
+    private void Awake() {
         // Populate `checkmarks` array with of this game object's children
         int i = 0;
         foreach (Transform child in transform) {

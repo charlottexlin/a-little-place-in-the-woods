@@ -20,6 +20,9 @@ public class Clickable : MonoBehaviour
     [Header("Destroy Object Settings")]
     [SerializeField] private bool destroyObject;
     [SerializeField] private GameObject objectToDestroy;
+    [Header("Dialogue Settings")]
+    [SerializeField] private bool dialogue;
+    [SerializeField] private string dialogueKey;
     [Header("Enable Clickable Settings")]
     [SerializeField] private bool enableClickable;
     [SerializeField] private Clickable clickableToEnable;
@@ -47,6 +50,7 @@ public class Clickable : MonoBehaviour
             // Complete animation and destroy this behavior
             if (Vector2.Distance(transform.position, newPosition) < 0.1f) {
                 moving = false;
+                gameObject.transform.Rotate(new Vector3(0, 0, zRotation));
                 Destroy(this);
             }
         }
@@ -58,35 +62,13 @@ public class Clickable : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
         if (hit.collider != null && hit.collider.gameObject == gameObject) {
-            /*
-            // Perform the appropriate action
-            switch (clickBehavior) {
-                case ClickBehavior.PickUp:
-                    PickUp();
-                    break;
-                case ClickBehavior.ChangeSprite:
-                    ChangeSprite();
-                    break;
-                case ClickBehavior.Disappear:
-                    Disappear();
-                    break;
-                case ClickBehavior.Move:
-                    Move();
-                    break;
-                case ClickBehavior.DestroyObject:
-                    DestroyObject();
-                    break;
-                case ClickBehavior.EnableClickable:
-                    EnableClickable();
-                    break;
-            }
-            */
             // Perform the appropriate actions
             if (pickUp) PickUp();
-            if (changeSprite) ChangeSprite();
+            if (changeSprite && newSprite is not null) ChangeSprite();
             if (move) Move();
-            if (enableClickable) EnableClickable();
-            if (destroyObject) DestroyObject();
+            if (enableClickable && clickableToEnable is not null) EnableClickable();
+            if (dialogue && dialogueKey is not null) ShowDialogue(dialogueKey);
+            if (destroyObject && objectToDestroy is not null) DestroyObject();
             if (disappear) Disappear();
         }
     }
@@ -94,8 +76,16 @@ public class Clickable : MonoBehaviour
     private void PickUp() {
         if (ItemsToCollect.items.ContainsKey(gameObject.name)) {
             ItemsToCollect.items[gameObject.name] = true;
+            // Increment items collected counter
+            ItemsToCollect.itemsCollected += 1;
+            // Display text for this item in the dialogue UI
+            ShowDialogue(gameObject.name);
             Destroy(gameObject);
         }
+    }
+
+    private void ShowDialogue(string dialogueKey) {
+        GameManager.instance.dialogueUI.ShowText(ItemsToCollect.texts[dialogueKey]);
     }
 
     private void ChangeSprite() {
@@ -128,14 +118,3 @@ public class Clickable : MonoBehaviour
         clickableToEnable.enabled = true;
     }
 }
-
-/*
-public enum ClickBehavior {
-    PickUp, // For collectable items
-    ChangeSprite, // Change the sprite of this object
-    Move, // Move this object
-    DestroyObject, // Destroy another object
-    Disappear, // Destroy this object
-    EnableClickable // Enable another object to be clickable
-}
-*/
