@@ -5,9 +5,6 @@ using UnityEngine.InputSystem;
 // This script controls the ending of the game. It should be attached to the cottage (where the player must go to finish the game)
 public class Finish : MonoBehaviour
 {
-    [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private GameObject endScreen;
-
     private void Awake() {
         // Make sure finish script is disabled
         enabled = false;
@@ -23,13 +20,10 @@ public class Finish : MonoBehaviour
         GameManager.instance.dialogueUI.ShowText(ItemsToCollect.texts["finish"]);
     }
 
-    // When the player touches the cottage, end the game (i.e. cover everything up with the end screen)
+    // When the player touches the cottage, show dialogue to prompt click
     private void OnTriggerEnter2D(Collider2D other) {
         if (enabled && other.gameObject.tag == "Player") {
-            // Disable player input
-            playerInput.enabled = false;
-            // Activate end screen
-            endScreen.SetActive(true);
+            GameManager.instance.dialogueUI.ShowText(ItemsToCollect.texts["cottage"]);
         }
     }
 }

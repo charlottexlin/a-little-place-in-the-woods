@@ -22,6 +22,7 @@ public static class ItemsToCollect {
         {"jar", "I can't reach it."},
         {"water", "The water's too deep to cross. Can we make a bridge of some kind?"},
         {"finish", "I found everything on my checklist! Let's bring it all back to my cottage now, where we started."},
+        {"cottage", "Thanks for all your help! Let's click the cottage to go inside."},
         {"Postage stamp", "Such a pretty picture! It'll look great on my living room wall."},
         {"Thimble", "A thimble! This would be a cute footstool."},
         {"Button", "A pretty button! This will make a nice dinner plate, if I patch up the holes."},

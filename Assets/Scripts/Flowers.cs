@@ -52,6 +52,7 @@ public class Flowers : MonoBehaviour
                     Camera.main.GetComponent<FollowCamera>().Disable();
                     Camera.main.transform.position = moss.gameObject.transform.position + Camera.main.GetComponent<FollowCamera>().GetCameraDistance();
                 }
+
                 StartCoroutine(MossDisappear());
             }
             // Clicked in incorrect order
@@ -91,6 +92,8 @@ public class Flowers : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         // Reenable follow camera
         Camera.main.GetComponent<FollowCamera>().Enable();
+        // Disable this script, so the flowers can no longer be clicked
+        this.enabled = false;
     }
 
     // Temporarily make flowers gray
