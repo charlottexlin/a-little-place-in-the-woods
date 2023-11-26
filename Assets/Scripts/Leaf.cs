@@ -55,6 +55,7 @@ public class Leaf : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
         // The leaf was clicked
         if (hit.collider != null && hit.collider.gameObject == gameObject && currentSprite < jarSprites.Length - 1 && acornCap) {
+            Audio.instance.PlaySound("waterDrop");
             MoveWaterDrop();
             StartCoroutine(ChangeJarSprite());
         }

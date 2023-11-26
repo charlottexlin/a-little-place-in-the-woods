@@ -28,6 +28,8 @@ public class Clickable : MonoBehaviour
     [SerializeField] private Clickable clickableToEnable;
     [Header("Disappear Settings")]
     [SerializeField] private bool disappear;
+    [Header("Sound effect Settings")]
+    [SerializeField] private bool leafRustleSound;
     private Collider2D coll;
     private SpriteRenderer sprite;
     private bool moving;
@@ -62,6 +64,12 @@ public class Clickable : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
         if (hit.collider != null && hit.collider.gameObject == gameObject) {
+            // Play sound effect
+            if (leafRustleSound) {
+                Audio.instance.PlaySound("leafRustle");
+            } else {
+                Audio.instance.PlaySound("click");
+            }
             // Perform the appropriate actions
             if (pickUp) PickUp();
             if (changeSprite && newSprite is not null) ChangeSprite();
