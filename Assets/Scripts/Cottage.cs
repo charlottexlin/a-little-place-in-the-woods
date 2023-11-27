@@ -7,6 +7,10 @@ public class Cottage : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private GameObject endScreen;
 
+    private void Awake() {
+        enabled = false;
+    }
+
     private void Update() {
         //  Detect mouse click on the cottage
         if (Mouse.current.leftButton.wasPressedThisFrame) {

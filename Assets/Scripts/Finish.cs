@@ -11,6 +11,9 @@ public class Finish : MonoBehaviour
     }
 
     private void OnEnable() {
+        // Enable clicking on the cottage to end the game
+        GetComponent<Cottage>().enabled = true;
+        // Show final dialogue
         StartCoroutine(FinalDialogue());
     }
 

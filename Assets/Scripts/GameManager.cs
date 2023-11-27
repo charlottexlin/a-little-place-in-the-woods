@@ -25,12 +25,4 @@ public class GameManager : MonoBehaviour
             finish.enabled = true;
         }
     }
-
-    public void RestartGame() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void QuitGame() {
-        Application.Quit();
-    }
 }

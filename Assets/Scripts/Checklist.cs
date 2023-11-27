@@ -23,6 +23,7 @@ public class Checklist : MonoBehaviour
         // Populate `checkmarks` array with of this game object's children
         int i = 0;
         foreach (Transform child in transform) {
+            if (i >= 10) break;
             checkmarks[i] = child.gameObject;
             i++;
         }
